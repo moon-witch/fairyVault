@@ -81,6 +81,14 @@ function closeModal() {
 </template>
 
 <style lang="scss" scoped>
+h2, label {
+    color: $bg-dark;
+}
+
+label {
+    font-weight: bold;
+}
+
 .custom_input {
   background: $bg-dark;
   color: $bg-bright;

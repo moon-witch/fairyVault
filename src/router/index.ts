@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 // @ts-ignore
 import Landing from '../views/HomeView.vue'
 // @ts-ignore
-import Dashboard from "../views/LoggedIn.vue"
+import Dashboard from "../views/Landing.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
