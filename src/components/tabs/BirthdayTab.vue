@@ -4,6 +4,7 @@ import { onBeforeMount, onMounted, ref, toRefs } from "vue";
 import ModalTemplate from "@/components/modals/ModalTemplate.vue";
 // @ts-ignore
 import ModalBackdrop from "@/components/modals/ModalBackdrop.vue";
+// @ts-ignore
 import { supabase } from "../../../supabase.js";
 
 //lets deploy
