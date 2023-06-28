@@ -38,9 +38,6 @@ async function getBirthdays() {
     if (data) {
       birthdayData.value = data;
     }
-    // @ts-ignore
-  } catch (error) {
-    alert(error.message);
   } finally {
     loading.value = false;
   }
@@ -60,9 +57,6 @@ async function updateBirthdays() {
     let { error } = await supabase.from("birthdays").upsert(updates);
 
     if (error) throw error;
-    // @ts-ignore
-  } catch (error) {
-    alert(error.message);
   } finally {
     loading.value = false;
     getBirthdays();
