@@ -23,7 +23,7 @@ onMounted(() => {
 <template>
   <div id="appContainer">
     <div>
-      <ActualLanding v-if="session" :session="session"/>
+      <ActualLanding v-if="session"/>
     </div>
     <div>
       <Landing v-if="!session" />

@@ -9,9 +9,6 @@ import { supabase } from "../../../supabase.js";
 const showBirthdayModal = ref(false);
 const loading = ref(false);
 
-const props = defineProps(["session"]);
-const { session } = toRefs(props);
-
 const name = ref();
 const date = ref();
 const note = ref();
@@ -29,7 +26,6 @@ onMounted(() => {
 async function getBirthdays() {
   try {
     loading.value = true;
-    const { user } = session.value;
 
     let { data, error, status } = await supabase
       .from("birthdays")
@@ -50,7 +46,6 @@ async function getBirthdays() {
 async function updateBirthdays() {
   try {
     loading.value = true;
-    const { user } = session.value;
 
     const updates = {
       name: name.value,

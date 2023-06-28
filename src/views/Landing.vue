@@ -7,8 +7,6 @@ import TabPanel from "primevue/tabpanel";
 // @ts-ignore
 import BirthdayTab from "@/components/tabs/BirthdayTab.vue";
 
-const props = defineProps(['session'])
-
 const loading = ref(false);
 const handleSignOut = async () => {
   try {
@@ -36,7 +34,7 @@ const handleSignOut = async () => {
     <div class="m-8 pt-12">
       <TabView>
         <TabPanel header="birthdays">
-          <BirthdayTab :session="props.session"/>
+          <BirthdayTab />
         </TabPanel>
         <TabPanel header="notes">
           <p>
