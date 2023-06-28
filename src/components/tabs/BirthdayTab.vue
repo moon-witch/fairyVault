@@ -6,6 +6,7 @@ import ModalTemplate from "@/components/modals/ModalTemplate.vue";
 import ModalBackdrop from "@/components/modals/ModalBackdrop.vue";
 import { supabase } from "../../../supabase.js";
 
+//lets deploy
 const showBirthdayModal = ref(false);
 const loading = ref(false);
 
