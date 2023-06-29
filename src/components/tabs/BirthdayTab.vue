@@ -9,6 +9,7 @@ import { supabase } from "../../../supabase.js";
 
 //lets deploy
 const showBirthdayModal = ref(false);
+const showEditModal = ref(false);
 const loading = ref(false);
 
 const name = ref();
@@ -19,6 +20,9 @@ const birthdayData = ref();
 
 function closeModal() {
   showBirthdayModal.value = false;
+  name.value = null;
+  date.value = null;
+  note.value = null;
 }
 
 onMounted(() => {
@@ -31,7 +35,7 @@ async function getBirthdays() {
 
     let { data, error, status } = await supabase
       .from("birthdays")
-      .select(`name, date, note, created_at, updated_at`);
+      .select(`id, name, date, note, created_at, updated_at`);
 
     if (error && status !== 406) throw error;
 
@@ -63,6 +67,21 @@ async function updateBirthdays() {
     closeModal();
   }
 }
+
+async function deleteBirthday(id: number) {
+  try {
+    loading.value = true;
+
+    let { error } = await supabase.from("birthdays").delete().eq('id', id);
+
+    if (error) throw error;
+  } finally {
+    loading.value = false;
+    await getBirthdays();
+    closeModal();
+  }
+}
+
 </script>
 
 <template>
@@ -84,6 +103,7 @@ async function updateBirthdays() {
             type="text"
             v-model="name"
             class="custom_input text-amber-400 rounded-lg p-2 mb-2"
+            required
           />
 
           <label for="date">date</label>
@@ -92,6 +112,7 @@ async function updateBirthdays() {
             type="date"
             v-model="date"
             class="custom_input text-amber-400 rounded-lg p-2 mb-2"
+            required
           />
 
           <label for="note">note</label>
@@ -100,34 +121,40 @@ async function updateBirthdays() {
             type="textarea"
             v-model="note"
             class="custom_input text-amber-400 rounded-lg p-2 mb-2"
+            required
           />
+          <div class="flex justify-center mt-8">
+            <button
+                @click.prevent="updateBirthdays()"
+                id="save"
+                class="mx-6 px-2 py-1 rounded-lg hover:rounded-xl transition-all"
+            >
+              Save
+            </button>
+            <button
+                @click.prevent="closeModal"
+                id="cancel"
+                class="mx-6 px-2 py-1 rounded-lg hover:rounded-xl transition-all"
+            >
+              Cancel
+            </button>
+          </div>
         </form>
-        <div class="flex justify-center mt-8">
-          <button
-            @click="updateBirthdays"
-            id="save"
-            class="mx-6 px-2 py-1 rounded-lg hover:rounded-xl transition-all"
-          >
-            Save
-          </button>
-          <button
-            @click.prevent="closeModal"
-            id="cancel"
-            class="mx-6 px-2 py-1 rounded-lg hover:rounded-xl transition-all"
-          >
-            Cancel
-          </button>
-        </div>
       </ModalTemplate>
       <ModalBackdrop :showBackdrop="showBirthdayModal" />
     </div>
     <div>
       <h2 class="font-bold text-2xl text-center my-12">birthdays</h2>
       <div v-for="data in birthdayData" class="text-center mx-40">
-        <div class="grid grid-cols-3">
+        <div class="grid grid-cols-4">
           <span>{{ data.name }}</span>
           <span>{{ data.date.split("-").reverse().join(".") }}</span>
           <span>{{ data.note }}</span>
+          <span>
+            <button @click="deleteBirthday(data.id)">
+              <span class="pi pi-times custom_button rounded p-0.5"></span>
+            </button>
+          </span>
         </div>
       </div>
     </div>
