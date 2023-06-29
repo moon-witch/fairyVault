@@ -58,13 +58,19 @@ async function updateBirthdays() {
       updated_at: new Date(),
     };
 
-    let { error } = await supabase.from("birthdays").upsert(updates);
+    if (name.value && date.value) {
+      let {error} = await supabase.from("birthdays").upsert(updates);
 
-    if (error) throw error;
+
+      if (error) throw error;
+
+    }
   } finally {
     loading.value = false;
-    getBirthdays();
-    closeModal();
+    if (name.value && date.value) {
+      getBirthdays();
+      closeModal();
+    }
   }
 }
 
