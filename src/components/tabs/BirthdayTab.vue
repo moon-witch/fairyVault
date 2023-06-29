@@ -18,6 +18,8 @@ const note = ref();
 
 const birthdayData = ref();
 
+const currentDate = ref();
+
 function closeModal() {
   showBirthdayModal.value = false;
   name.value = null;
@@ -27,6 +29,9 @@ function closeModal() {
 
 onMounted(() => {
   getBirthdays();
+  const today = new Date;
+  currentDate.value = today.toISOString().split('T')[0].split("-").reverse().join(".").substring(0,6);
+  console.log(currentDate.value)
 });
 
 async function getBirthdays() {
@@ -131,6 +136,7 @@ async function deleteBirthday(id: number) {
           />
           <div class="flex justify-center mt-8">
             <button
+                type="submit"
                 @click.prevent="updateBirthdays()"
                 id="save"
                 class="mx-6 px-2 py-1 rounded-lg hover:rounded-xl transition-all"
@@ -154,7 +160,8 @@ async function deleteBirthday(id: number) {
       <div v-for="data in birthdayData" class="text-center mx-40">
         <div class="grid grid-cols-4">
           <span>{{ data.name }}</span>
-          <span>{{ data.date.split("-").reverse().join(".") }}</span>
+          <span v-if="currentDate === data.date.split('-').reverse().join('.').substring(0,6)" class="bg-red-900 rounded">{{ data.date.split("-").reverse().join(".") }}</span>
+          <span v-else >{{ data.date.split("-").reverse().join(".") }}</span>
           <span>{{ data.note }}</span>
           <span>
             <button @click="deleteBirthday(data.id)">
