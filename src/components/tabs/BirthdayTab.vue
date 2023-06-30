@@ -198,11 +198,11 @@ async function deleteBirthday(id: number) {
     </div>
     <div>
       <h2 class="font-bold text-4xl text-center my-8">birthdays</h2>
-      <div class="grid grid-cols-3">
-        <div v-for="month in months" class="m-8 p-4 custom_card rounded">
+      <div class="grid lg:grid-cols-3">
+        <div v-for="month in months" class="m-1 lg:m-8 p-4 custom_card rounded">
           <div class="text-center my-2 font-bold text-xl">{{ month.name }}</div>
           <div v-for="data in birthdayData" class="text-center">
-            <div v-if="data.date.split('-').join('.').substring(3,5) === month.number" class="grid grid-cols-4">
+            <div v-if="data.date.split('-').join('.').substring(3,5) === month.number" class="grid lg:grid-cols-4">
               <span>{{ data.name }}</span>
               <span v-if="currentDate === data.date.split('-').join('.').substring(0,6)" class="bg-red-900 rounded">{{ data.date.split("-").join(".") }}</span>
               <span v-else >{{ data.date.split("-").join(".") }}</span>
