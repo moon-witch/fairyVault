@@ -10,7 +10,7 @@ const props = defineProps({
 
 <template>
   <teleport to="body">
-    <div class="absolute top-60 w-screen z-20">
+    <div class="fixed top-60 w-screen z-20">
       <div
           v-if="props.show"
           class="flex items-start justify-center max-h-screen pt-24 text-center"

@@ -16,6 +16,11 @@ const name = ref();
 const date = ref();
 const note = ref();
 
+const updateName = ref();
+const updateDate = ref();
+const updateNote = ref();
+const updatedId = ref();
+
 const birthdayData = ref();
 const months = [
   {name: 'January',
@@ -58,8 +63,22 @@ const months = [
 
 const currentDate = ref();
 
+function openEditModal(id: number, name: string, date: string, note: string) {
+  showEditModal.value = true;
+
+  updateName.value = name;
+  updateDate.value = date;
+  updateNote.value = note;
+  updatedId.value = id;
+
+  console.log(id)
+  console.log(birthdayData.value)
+  console.log(updatedId.value)
+}
+
 function closeModal() {
   showBirthdayModal.value = false;
+  showEditModal.value = false;
   name.value = null;
   date.value = null;
   note.value = null;
@@ -93,27 +112,40 @@ async function getBirthdays() {
   }
 }
 
-async function updateBirthdays() {
+async function updateBirthdays(id?: number) {
   try {
     loading.value = true;
 
-    const updates = {
+    const newEntry = {
       name: name.value,
       date: date.value,
       note: note.value,
       updated_at: new Date(),
     };
 
-    if (name.value && date.value) {
-      let {error} = await supabase.from("birthdays").upsert(updates);
+    const updatedEntry = {
+      name: updateName.value,
+      date: updateDate.value,
+      note: updateNote.value,
+      updated_at: new Date(),
+    }
 
-
-      if (error) throw error;
+    if (name.value && date.value || updateName.value && updateDate.value) {
+      console.log('triggered')
+      if (!id) {
+        console.log('no id')
+        let {error} = await supabase.from("birthdays").insert(newEntry);
+        if (error) throw error;
+      } else {
+        console.log('id', id)
+        let {error} = await supabase.from("birthdays").update(updatedEntry).eq('id', id);
+        if (error) throw error;
+      }
 
     }
   } finally {
     loading.value = false;
-    if (name.value && date.value) {
+    if (name.value && date.value || updateName.value && updateDate.value) {
       getBirthdays();
       closeModal();
     }
@@ -201,20 +233,72 @@ async function deleteBirthday(id: number) {
       <div class="grid lg:grid-cols-3">
         <div v-for="month in months" class="m-1 lg:m-8 custom_card rounded">
           <div class="text-center mb-2 py-2 font-bold text-3xl custom_head frontpage-font">{{ month.name }}</div>
-          <div v-for="data in birthdayData" class="text-center">
-            <div v-if="data.date.split('-').join('.').substring(3,5) === month.number" class="grid lg:grid-cols-4">
-              <span>{{ data.name }}</span>
-              <span v-if="currentDate === data.date.split('-').join('.').substring(0,6)" class="bg-red-900 rounded">{{ data.date.split("-").join(".") }}</span>
-              <span v-else >{{ data.date.split("-").join(".") }}</span>
-              <span>{{ data.note }}</span>
-              <span>
-            <button @click="deleteBirthday(data.id)">
-              <span class="pi pi-times custom_button rounded p-0.5"></span>
-            </button>
-          </span>
+          <div v-for="birthday in birthdayData" class="text-center">
+            <div v-if="birthday.date.split('-').join('.').substring(3,5) === month.number" class="grid lg:grid-cols-4 py-0.5">
+              <span>{{ birthday.name }}</span>
+              <span v-if="currentDate === birthday.date.split('-').join('.').substring(0,6)" class="bg-red-900 rounded">{{ birthday.date.split("-").join(".") }}</span>
+              <span v-else >{{ birthday.date.split("-").join(".") }}</span>
+              <span>{{ birthday.note }}</span>
+              <span class="flex justify-center">
+                <button @click="deleteBirthday(birthday.id)" class="mx-0.5 flex justify-center align-middle">
+                  <span class="pi pi-times custom_button rounded p-1 pr-0.7"></span>
+                </button>
+                <button @click="openEditModal(birthday.id, birthday.name, birthday.date.split('-').reverse().join('-'), birthday.note)" class="mx-0.5 flex justify-center align-middle">
+                  <span class="pi pi-pencil custom_button rounded p-1 pr-0.7"></span>
+                </button>
+              </span>
             </div>
           </div>
         </div>
+        <ModalTemplate :show="showEditModal">
+          <h2 class="font-bold text-2xl text-center">edit entry</h2>
+          <form class="flex flex-col justify-center">
+            <label for="updateName">name</label>
+            <input
+                id="updateName"
+                type="text"
+                v-model="updateName"
+                class="custom_input text-amber-400 rounded-lg p-2 mb-2"
+                required
+            />
+
+            <label for="updateDate">date</label>
+            <input
+                id="updateDate"
+                type="date"
+                v-model="updateDate"
+                class="custom_input text-amber-400 rounded-lg p-2 mb-2"
+                required
+            />
+
+            <label for="updateNote">note</label>
+            <textarea
+                id="updateNote"
+                type="textarea"
+                v-model="updateNote"
+                class="custom_input text-amber-400 rounded-lg p-2 mb-2"
+                required
+            />
+            <div class="flex justify-center mt-8">
+              <button
+                  type="submit"
+                  @click.prevent="updateBirthdays(updatedId)"
+                  id="save"
+                  class="mx-6 px-2 py-1 rounded-lg hover:rounded-xl transition-all"
+              >
+                Save
+              </button>
+              <button
+                  @click.prevent="closeModal"
+                  id="cancel"
+                  class="mx-6 px-2 py-1 rounded-lg hover:rounded-xl transition-all"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </ModalTemplate>
+        <ModalBackdrop :showBackdrop="showEditModal" />
       </div>
     </div>
   </div>
