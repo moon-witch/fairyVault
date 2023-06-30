@@ -17,6 +17,44 @@ const date = ref();
 const note = ref();
 
 const birthdayData = ref();
+const months = [
+  {name: 'January',
+    number: '01'
+  },
+  {name: 'February',
+    number: '02'
+  },
+  {name: 'March',
+    number: '03'
+  },
+  {name: 'April',
+    number: '04'
+  },
+  {name: 'May',
+    number: '05'
+  },
+  {name: 'June',
+    number: '06'
+  },
+  {name: 'July',
+    number: '07'
+  },
+  {name: 'August',
+    number: '08'
+  },
+  {name: 'September',
+    number: '09'
+  },
+  {name: 'October',
+    number: '10'
+  },
+  {name: 'November',
+    number: '11'
+  },
+  {name: 'December',
+    number: '12'
+  }
+]
 
 const currentDate = ref();
 
@@ -31,7 +69,6 @@ onMounted(() => {
   getBirthdays();
   const today = new Date;
   currentDate.value = today.toISOString().split('T')[0].split("-").reverse().join(".").substring(0,6);
-  console.log(currentDate.value)
 });
 
 async function getBirthdays() {
@@ -46,6 +83,10 @@ async function getBirthdays() {
 
     if (data) {
       birthdayData.value = data;
+      for (let i = 0; i < birthdayData.value.length; i++) {
+        birthdayData.value[i].date = birthdayData.value[i].date.split('-').reverse().join('-')
+      }
+      birthdayData.value.sort((a: any, b: any) => parseFloat(a.date) - parseFloat(b.date))
     }
   } finally {
     loading.value = false;
@@ -156,18 +197,23 @@ async function deleteBirthday(id: number) {
       <ModalBackdrop :showBackdrop="showBirthdayModal" />
     </div>
     <div>
-      <h2 class="font-bold text-2xl text-center my-12">birthdays</h2>
-      <div v-for="data in birthdayData" class="text-center mx-40">
-        <div class="grid grid-cols-4">
-          <span>{{ data.name }}</span>
-          <span v-if="currentDate === data.date.split('-').reverse().join('.').substring(0,6)" class="bg-red-900 rounded">{{ data.date.split("-").reverse().join(".") }}</span>
-          <span v-else >{{ data.date.split("-").reverse().join(".") }}</span>
-          <span>{{ data.note }}</span>
-          <span>
+      <h2 class="font-bold text-4xl text-center my-8">birthdays</h2>
+      <div class="grid grid-cols-3">
+        <div v-for="month in months" class="m-8 p-4 custom_card rounded">
+          <div class="text-center my-2 font-bold text-xl">{{ month.name }}</div>
+          <div v-for="data in birthdayData" class="text-center">
+            <div v-if="data.date.split('-').join('.').substring(3,5) === month.number" class="grid grid-cols-4">
+              <span>{{ data.name }}</span>
+              <span v-if="currentDate === data.date.split('-').join('.').substring(0,6)" class="bg-red-900 rounded">{{ data.date.split("-").join(".") }}</span>
+              <span v-else >{{ data.date.split("-").join(".") }}</span>
+              <span>{{ data.note }}</span>
+              <span>
             <button @click="deleteBirthday(data.id)">
               <span class="pi pi-times custom_button rounded p-0.5"></span>
             </button>
           </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -186,6 +232,12 @@ label {
 
 span {
     color: $bg-alt;
+}
+
+.custom_card {
+  border: 2px solid $bg-dark;
+  color: $bg-alt;
+  min-height: 200px;
 }
 
 .custom_button {
