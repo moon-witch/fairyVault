@@ -27,11 +27,11 @@ const handleSignOut = async () => {
 <template>
   <div>
     <div class="custom_text flex justify-center pt-32">
-      <div class="frontpage-font font-bold text-6xl">
+      <div class="frontpage-font font-bold text-6xl text-center">
         fairy's secret mangrove forest
       </div>
     </div>
-    <div class="m-8 pt-12">
+    <div class="p-8">
       <TabView>
         <TabPanel header="birthdays">
           <BirthdayTab />
@@ -49,7 +49,7 @@ const handleSignOut = async () => {
         </TabPanel>
       </TabView>
     </div>
-    <div class="custom_text absolute top-4 right-4">
+    <div class="custom_text absolute top-4 right-8">
       <button @click.prevent="handleSignOut">Logout</button>
     </div>
   </div>

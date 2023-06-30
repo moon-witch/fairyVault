@@ -138,11 +138,11 @@ async function deleteBirthday(id: number) {
 
 <template>
   <div>
-    <div class="text-end">
+    <div class="text-center lg:text-end">
       <button
         type="button"
         @click="showBirthdayModal = !showBirthdayModal"
-        class="custom_button px-2 py-1 rounded"
+        class="custom_button lg:mr-8 mt-2 px-2 py-1 rounded"
       >
         <p id="newLabel"><span>add birthday</span></p>
       </button>
@@ -197,10 +197,10 @@ async function deleteBirthday(id: number) {
       <ModalBackdrop :showBackdrop="showBirthdayModal" />
     </div>
     <div>
-      <h2 class="font-bold text-4xl text-center my-8">birthdays</h2>
+      <h2 class="font-bold text-6xl text-center my-8 frontpage-font">birthdays</h2>
       <div class="grid lg:grid-cols-3">
-        <div v-for="month in months" class="m-1 lg:m-8 p-4 custom_card rounded">
-          <div class="text-center my-2 font-bold text-xl">{{ month.name }}</div>
+        <div v-for="month in months" class="m-1 lg:m-8 custom_card rounded">
+          <div class="text-center mb-2 py-2 font-bold text-3xl custom_head frontpage-font">{{ month.name }}</div>
           <div v-for="data in birthdayData" class="text-center">
             <div v-if="data.date.split('-').join('.').substring(3,5) === month.number" class="grid lg:grid-cols-4">
               <span>{{ data.name }}</span>
@@ -240,9 +240,24 @@ span {
   min-height: 200px;
 }
 
+.custom_head {
+  background: $bg-dark;
+  letter-spacing: 3px;
+}
+
 .custom_button {
   background: $bg-dark;
   color: $bg-alt;
+  transition: 0.1s ease;
+
+  @media (max-width: 1400px) {
+  }
+
+  &:hover {
+    transition: 0.1s ease;
+    box-shadow: 0 0 6px 0 $bg-dark;
+    transform: scale(1.01)
+  }
 }
 
 .custom_input {
