@@ -27,13 +27,13 @@ const handleSignOut = async () => {
 <template>
   <div>
     <div class="custom_text flex justify-center pt-32">
-      <div class="frontpage-font font-bold text-6xl text-center">
+      <div class="frontpage-font font-bold text-7xl text-center">
         fairy's secret mangrove forest
       </div>
     </div>
     <div class="p-8">
       <TabView>
-        <TabPanel header="birthdays">
+        <TabPanel header="birthdays" >
           <BirthdayTab />
         </TabPanel>
         <TabPanel header="notes">
@@ -56,6 +56,9 @@ const handleSignOut = async () => {
 </template>
 
 <style lang="scss" scoped>
+.custom_panel_container {
+  background: $bg-alt;
+}
 .custom_text {
   color: $primary;
 }
