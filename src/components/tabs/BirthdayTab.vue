@@ -115,7 +115,7 @@ async function getBirthdays() {
         birthdayData.value[i].date = birthdayData.value[i].date.split('-').reverse().join('-')
       }
       birthdayData.value.sort((a: any, b: any) => parseFloat(a.date) - parseFloat(b.date))
-      birthdayToday.value = birthdayData.value.some(e => e.date.split('-').join('.').substring(0,6) === currentDate.value)
+      birthdayToday.value = birthdayData.value.some((e: any) => e.date.split('-').join('.').substring(0,6) === currentDate.value)
     }
   } finally {
     loading.value = false;
