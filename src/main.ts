@@ -14,11 +14,17 @@ import "primevue/resources/themes/lara-dark-indigo/theme.css";
 import "primevue/resources/primevue.min.css";
 //icons
 import 'primeicons/primeicons.css';
+//confirmationService
+import ConfirmationService from 'primevue/confirmationservice';
+//ToastService
+import ToastService from 'primevue/toastservice';
 
 const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
 app.use(PrimeVue)
+app.use(ConfirmationService)
+app.use(ToastService)
 
 app.mount('#app')

@@ -6,8 +6,15 @@ import ModalTemplate from "@/components/modals/ModalTemplate.vue";
 import ModalBackdrop from "@/components/modals/ModalBackdrop.vue";
 // @ts-ignore
 import {supabase} from "../../../supabase.js";
+import ConfirmPopup from 'primevue/confirmpopup';
+import Toast from 'primevue/toast';
 
-//lets deploy
+import {useConfirm} from "primevue/useconfirm";
+import {useToast} from "primevue/usetoast";
+
+const confirm = useConfirm();
+const toast = useToast();
+
 const showBirthdayModal = ref(false);
 const showEditModal = ref(false);
 const loading = ref(false);
@@ -115,7 +122,7 @@ async function getBirthdays() {
         birthdayData.value[i].date = birthdayData.value[i].date.split('-').reverse().join('-')
       }
       birthdayData.value.sort((a: any, b: any) => parseFloat(a.date) - parseFloat(b.date))
-      birthdayToday.value = birthdayData.value.some((e: any) => e.date.split('-').join('.').substring(0,6) === currentDate.value)
+      birthdayToday.value = birthdayData.value.some((e: any) => e.date.split('-').join('.').substring(0, 6) === currentDate.value)
     }
   } finally {
     loading.value = false;
@@ -173,10 +180,48 @@ async function deleteBirthday(id: number) {
   }
 }
 
+const showTemplate = (event: any, currentId: number) => {
+  confirm.require({
+    target: event.currentTarget,
+    group: 'deleteConfirm',
+    message: 'Weally, faiwy? Dewete?',
+    icon: 'pi pi-question-circle',
+    acceptIcon: 'pi pi-check',
+    rejectIcon: 'pi pi-times',
+    accept: () => {
+      toast.add({
+        severity: 'warn',
+        summary: 'JUDGEMENT: DEATH',
+        detail: 'You threw the entry into the depths of hell!',
+        life: 3000
+      });
+      deleteBirthday(currentId)
+    },
+    reject: () => {
+      toast.add({
+        severity: 'success',
+        summary: 'JUDGEMENT: REDEMPTION',
+        detail: 'You saved that entry from certain death!',
+        life: 3000
+      });
+    }
+  });
+}
+
 </script>
 
 <template>
   <div>
+    <Toast/>
+    <ConfirmPopup style="background-color: rgba(31, 29, 29, 0.9); border-color: rgba(31, 29, 29, 0.86); :before {border-bottom-color: rgba(31, 29, 29, 0.86)} :after {border-bottom-color: rgba(31, 29, 29, 0.86) }"
+                  group="deleteConfirm">
+      <template #message="slotProps">
+        <div class="flex p-4">
+          <i :class="slotProps.message.icon" style="font-size: 1.5rem"></i>
+          <p class="pl-2">{{ slotProps.message.message }}</p>
+        </div>
+      </template>
+    </ConfirmPopup>
     <div class="text-center lg:text-end">
       <button
           type="button"
@@ -243,7 +288,8 @@ async function deleteBirthday(id: number) {
             Today:
           </div>
           <div v-for="birthday in birthdayData" class="text-center">
-            <div v-if="currentDate === birthday.date.split('-').join('.').substring(0,6)" class="custom_today px-2 mx-2 border rounded-2xl">
+            <div v-if="currentDate === birthday.date.split('-').join('.').substring(0,6)"
+                 class="custom_today px-2 mx-2 border rounded-2xl">
               <span class="text-xl">{{ birthday.name }}</span>
             </div>
           </div>
@@ -267,7 +313,7 @@ async function deleteBirthday(id: number) {
                     class="mx-0.5 flex justify-center align-middle">
                   <span class="pi pi-pencil custom_button rounded p-1 pr-0.7"></span>
                 </button>
-                <button @click="deleteBirthday(birthday.id)" class="mx-0.5 flex justify-center align-middle">
+                <button @click="showTemplate($event, birthday.id)" class="mx-0.5 flex justify-center align-middle">
                   <span class="pi pi-times custom_button rounded p-1 pr-0.7"></span>
                 </button>
               </span>
@@ -340,15 +386,6 @@ label {
 
 span {
   color: $bg-alt;
-}
-
-.custom_container {
-  box-shadow: inset 0 0 50px 0 $bg-dark;
-}
-
-.custom_today_container {
-  box-shadow: inset 0 0 10px 0 $bg-dark;
-  width: fit-content;
 }
 
 .custom_today_title {

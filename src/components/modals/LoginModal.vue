@@ -101,6 +101,7 @@ label {
 }
 
 .custom_button {
+  cursor: url('/smol-fairy.png'), auto;
 
   @media (min-width: 900px) {
     width: 9rem;
@@ -116,7 +117,6 @@ label {
 
   &:hover #newLabel:after {
     transition: 7s ease;
-    cursor: none;
     content: 'login';
   }
 }
