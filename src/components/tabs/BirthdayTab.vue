@@ -346,7 +346,7 @@ const showTemplate = (event: any, currentId: number) => {
               class="custom_today px-2 mx-2 border rounded-2xl"
             >
               <span class="text-xl">{{ birthday.name }}</span>
-              <span class="text-xl">
+              <span v-if="birthday.date.split('-')[2] != '0001'" class="text-xl">
                 {{
                   " " + "(" + (currentYear - birthday.date.split("-")[2]) + ")"
                 }}</span
