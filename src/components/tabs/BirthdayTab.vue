@@ -392,7 +392,7 @@ const showTemplate = (event: any, currentId: number) => {
                       >(N)</span
                     ></span
                   >
-                  <span style="color: lightgrey" class="lg:pl-6">{{ birthday.note }}</span>
+                  <span style="color: lightgrey" class="lg:pl-2">{{ birthday.note }}</span>
                 </div>
                 <div class="flex justify-end">
                   <button
