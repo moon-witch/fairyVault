@@ -346,7 +346,10 @@ const showTemplate = (event: any, currentId: number) => {
               class="custom_today px-2 mx-2 border rounded-2xl"
             >
               <span class="text-xl">{{ birthday.name }}</span>
-              <span v-if="birthday.date.split('-')[2] != '0001'" class="text-xl">
+              <span
+                v-if="birthday.date.split('-')[2] != '0001'"
+                class="text-xl"
+              >
                 {{
                   " " + "(" + (currentYear - birthday.date.split("-")[2]) + ")"
                 }}</span
@@ -371,47 +374,53 @@ const showTemplate = (event: any, currentId: number) => {
               "
               class="grid xl:grid-cols-4 py-0.5"
             >
-              <span>{{ birthday.name }}</span>
-              <span
-                v-if="
-                  currentDate ===
-                  birthday.date.split('-').join('.').substring(0, 6)
-                "
-                class="bg-red-900 rounded"
-                >{{ birthday.date.split("-").join(".") }}
-                <span class="text-xs" v-if="birthday.isNameday">(N)</span>
-              </span>
-              <span v-else
-                >{{ birthday.date.split("-").join(".") }}
-                <span class="text-xs" v-if="birthday.isNameday">(N)</span></span
-              >
-              <span>{{ birthday.note }}</span>
-              <span class="flex justify-end pr-2">
-                <button
-                  @click="
-                    openEditModal(
-                      birthday.id,
-                      birthday.name,
-                      birthday.date.split('-').reverse().join('-'),
-                      birthday.note,
-                      birthday.isNameday
-                    )
-                  "
-                  class="mx-0.5 flex justify-center align-middle"
-                >
+              <div class="grid grid-cols-3 text-sm">
+                <div class="break-words">{{ birthday.name }}</div>
+                <div>
                   <span
-                    class="pi pi-pencil custom_button rounded p-1 pr-0.7"
-                  ></span>
-                </button>
-                <button
-                  @click="showTemplate($event, birthday.id)"
-                  class="mx-0.5 flex justify-center align-middle"
-                >
-                  <span
-                    class="pi pi-times custom_button rounded p-1 pr-0.7"
-                  ></span>
-                </button>
-              </span>
+                    v-if="
+                      currentDate ===
+                      birthday.date.split('-').join('.').substring(0, 6)
+                    "
+                    class="bg-red-900 rounded"
+                    >{{ birthday.date.split("-").join(".") }}
+                    <span class="text-xs" v-if="birthday.isNameday">(N)</span>
+                  </span>
+                  <span v-else
+                    >{{ birthday.date.split("-").join(".") }}
+                    <span class="text-xs" v-if="birthday.isNameday"
+                      >(N)</span
+                    ></span
+                  >
+                  <span style="color: lightgrey">{{ birthday.note }}</span>
+                </div>
+                <div class="flex justify-end">
+                  <button
+                    @click="
+                      openEditModal(
+                        birthday.id,
+                        birthday.name,
+                        birthday.date.split('-').reverse().join('-'),
+                        birthday.note,
+                        birthday.isNameday
+                      )
+                    "
+                    class="mx-0.5 flex justify-center align-middle"
+                  >
+                    <span
+                      class="pi pi-pencil custom_button rounded p-1 pr-0.7"
+                    ></span>
+                  </button>
+                  <button
+                    @click="showTemplate($event, birthday.id)"
+                    class="mx-0.5 flex justify-center align-middle"
+                  >
+                    <span
+                      class="pi pi-times custom_button rounded p-1 pr-0.7"
+                    ></span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -552,13 +561,13 @@ span {
 }
 
 :deep(.p-checkbox .p-checkbox-box .p-checkbox-icon) {
-    color: $bg-bright;
+  color: $bg-bright;
 }
 
 :deep(.p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-highlight:hover) {
-    border-color: $secondary;
-    background: $secondary;
-    color: $primary;
+  border-color: $secondary;
+  background: $secondary;
+  color: $primary;
 }
 
 :deep(.p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus) {
@@ -575,7 +584,7 @@ span {
 }
 
 :deep(.p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover) {
-    border-color: $bg-dark;
+  border-color: $bg-dark;
 }
 
 #save {
