@@ -372,7 +372,7 @@ const showTemplate = (event: any, currentId: number) => {
                 birthday.date.split('-').join('.').substring(3, 5) ===
                 month.number
               "
-              class="grid xl:grid-cols-4 py-0.5"
+              class="py-0.5"
             >
               <div class="grid grid-cols-3 text-sm">
                 <div class="break-words">{{ birthday.name }}</div>
@@ -392,7 +392,7 @@ const showTemplate = (event: any, currentId: number) => {
                       >(N)</span
                     ></span
                   >
-                  <span style="color: lightgrey">{{ birthday.note }}</span>
+                  <span style="color: lightgrey" class="lg:pl-6">{{ birthday.note }}</span>
                 </div>
                 <div class="flex justify-end">
                   <button
