@@ -20,7 +20,7 @@ const downloadImage = async () => {
   }
 }
 
-const uploadImage = async (evt) => {
+const uploadAvatar = async (evt) => {
   files.value = evt.target.files
   try {
     uploading.value = true
@@ -62,14 +62,14 @@ watch(path, () => {
 
     <div :style="{ width: size + 'em' }">
       <label class="button primary block" for="single">
-        {{ uploading ? 'Uploading ...' : 'Upload' }}
+        {{ uploading ? '...' : '.' }}
       </label>
       <input
           style="visibility: hidden; position: absolute"
           type="file"
           id="single"
           accept="image/*"
-          @change="uploadImage"
+          @change="uploadAvatar"
           :disabled="uploading"
       />
     </div>
@@ -80,10 +80,13 @@ watch(path, () => {
 .upload-container {
   border: 1px solid $bg-dark;
   border-radius: 50px;
-  padding: 0.5rem 1rem;
+  padding: 0 0.6rem;
+  position: absolute;
+  top: 61%;
+  right: 37.5%;
 
   :hover {
-    color: $secondary;
+    color: $bg-bright;
     cursor: pointer;
   }
 }

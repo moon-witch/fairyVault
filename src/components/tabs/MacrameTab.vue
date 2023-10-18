@@ -232,9 +232,6 @@ const showTemplate = (event: any, currentId: number) => {
               class="custom_input text-amber-400 rounded-lg p-2 mb-2"
               required
           />
-          <div class="upload">
-            <UploadSupa />
-          </div>
           <div class="flex justify-center mt-8">
             <button
                 type="submit"
@@ -255,14 +252,23 @@ const showTemplate = (event: any, currentId: number) => {
         </form>
       </ModalTemplate>
       <ModalBackdrop :showBackdrop="showMacrameModal" />
-        <CardTemplate link="aTsC_GP6_sI?si=Tp3g9WwNuyyKAl3v" photo="jade_leafy_bracelet.jpg" header="big leafy thing">
+      <div  class="recipes">
+        <div v-for="recipe in macrameData">
+          <CardTemplate :link="recipe.link" :photo="recipe.photo" :header="recipe.header">
+            <!--            <template v-slot:upload>
+                          <div class="upload">
+                            <UploadSupa v-model:path="photo" @upload="updateRecipes"/>
+                          </div>
+                        </template>-->
             <template v-slot:notes-1>
-                hello
+              {{  recipe.notes1 }}
             </template>
             <template v-slot:notes-2>
-                helloo
+              {{  recipe.notes2 }}
             </template>
-        </CardTemplate>
+          </CardTemplate>
+        </div>
+      </div>
     </div>
 </template>
 
@@ -388,5 +394,11 @@ span {
   justify-content: center;
   color: $bg-dark;
   margin-top: 1rem;
+}
+
+.recipes {
+  display: flex;
+  justify-content: center;
+  gap: 5rem;
 }
 </style>

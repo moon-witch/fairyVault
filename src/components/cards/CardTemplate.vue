@@ -34,9 +34,12 @@ const YTlink = "https://www.youtube.com/embed/" + props.link;
           allowfullscreen
         ></iframe>
       </div>
-      <div class="photo">
+<!--      <div class="photo">
         <img :src="photo" />
-      </div>
+        <div>
+          <slot name="upload" />
+        </div>
+      </div>-->
     </div>
     <div class="notes-1">
       <h3>Materials</h3>
