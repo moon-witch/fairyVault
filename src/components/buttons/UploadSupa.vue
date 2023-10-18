@@ -50,7 +50,7 @@ watch(path, () => {
 </script>
 
 <template>
-  <div>
+  <div class="upload-container">
     <img
         v-if="src"
         :src="src"
@@ -75,3 +75,16 @@ watch(path, () => {
     </div>
   </div>
 </template>
+
+<style scoped lang="scss">
+.upload-container {
+  border: 1px solid $bg-dark;
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+
+  :hover {
+    color: $secondary;
+    cursor: pointer;
+  }
+}
+</style>

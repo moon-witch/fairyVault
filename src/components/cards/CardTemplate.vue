@@ -58,6 +58,7 @@ const YTlink = "https://www.youtube.com/embed/" + props.link;
   border: 1px solid $bg-dark;
   border-radius: 50px;
   padding: 2rem;
+  margin-top: 2rem;
 
   .image-content {
     display: flex;
@@ -75,8 +76,10 @@ const YTlink = "https://www.youtube.com/embed/" + props.link;
       width: 13rem;
     }
 
-    @media (max-width: 1024px) {
+    @media (max-width: 1023px) {
       flex-direction: column;
+      max-width: 30rem;
+      margin: 2rem;
     }
   }
 

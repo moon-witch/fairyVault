@@ -14,10 +14,9 @@ import ModalBackdrop from "@/components/modals/ModalBackdrop.vue";
 const confirm = useConfirm();
 const toast = useToast();
 
-const showBirthdayModal = ref(false);
+const showMacrameModal = ref(false);
 const showEditModal = ref(false);
 const loading = ref(false);
-const birthdayToday = ref(false);
 
 const header = ref<string | null>(null)
 const updateHeader = ref<string | null>(null)
@@ -50,7 +49,7 @@ function openEditModal(
 }
 
 function closeModal() {
-  showBirthdayModal.value = false;
+  showMacrameModal.value = false;
   showEditModal.value = false;
   header.value = null;
   link.value = null;
@@ -75,13 +74,14 @@ async function getRecipes() {
 
     if (data) {
       macrameData.value = data;
+      console.log(data)
     }
   } finally {
     loading.value = false;
   }
 }
 
-async function updateBirthdays(id?: number) {
+async function updateRecipes(id?: number) {
   try {
     loading.value = true;
 
@@ -124,7 +124,7 @@ async function updateBirthdays(id?: number) {
   }
 }
 
-async function deleteBirthday(id: number) {
+async function deleteRecipes(id: number) {
   try {
     loading.value = true;
 
@@ -153,7 +153,7 @@ const showTemplate = (event: any, currentId: number) => {
         detail: "You threw the entry into the depths of hell!",
         life: 3000,
       });
-      deleteBirthday(currentId);
+      deleteRecipes(currentId);
     },
     reject: () => {
       toast.add({
@@ -190,47 +190,55 @@ const showTemplate = (event: any, currentId: number) => {
           </div>
         </template>
       </ConfirmPopup>
-      <ModalTemplate :show="showBirthdayModal">
+      <button
+          type="button"
+          @click="showMacrameModal = !showMacrameModal"
+          class="custom_button lg:mr-8 px-4 py-2 rounded"
+      >
+        <p class="text-lg"><span>add</span></p>
+      </button>
+      <ModalTemplate :show="showMacrameModal">
         <h2 class="font-bold text-2xl text-center">new birthday</h2>
         <form class="flex flex-col justify-center">
-          <label for="name">name</label>
+          <label for="header">header</label>
           <input
-              id="name"
+              id="header"
               type="text"
-              v-model="name"
+              v-model="header"
               class="custom_input text-amber-400 rounded-lg p-2 mb-2"
               required
           />
-
-          <label for="date">date</label>
+          <label for="link">link</label>
           <input
-              id="date"
-              type="date"
-              v-model="date"
+              id="link"
+              type="text"
+              v-model="link"
               class="custom_input text-amber-400 rounded-lg p-2 mb-2"
               required
           />
-          <div class="flex justify-start">
-            <Checkbox
-                v-model="isNameday"
-                inputId="createNameday"
-                :binary="true"
-            />
-            <label class="text-sm ml-2" for="createNameday">Saint's day?</label>
-          </div>
-
-          <label for="note">note</label>
+          <label for="notes1">materials</label>
           <textarea
-              id="note"
+              id="notes1"
               type="textarea"
-              v-model="note"
+              v-model="notes1"
               class="custom_input text-amber-400 rounded-lg p-2 mb-2"
               required
           />
+          <label for="notes2">good to know</label>
+          <textarea
+              id="notes2"
+              type="textarea"
+              v-model="notes2"
+              class="custom_input text-amber-400 rounded-lg p-2 mb-2"
+              required
+          />
+          <div class="upload">
+            <UploadSupa />
+          </div>
           <div class="flex justify-center mt-8">
             <button
                 type="submit"
-                @click.prevent="updateBirthdays()"
+                @click.prevent="updateRecipes()"
                 id="save"
                 class="mx-6 px-2 py-1 rounded-lg hover:rounded-xl transition-all"
             >
@@ -246,8 +254,7 @@ const showTemplate = (event: any, currentId: number) => {
           </div>
         </form>
       </ModalTemplate>
-      <ModalBackdrop :showBackdrop="showBirthdayModal" />
-      <UploadSupa />
+      <ModalBackdrop :showBackdrop="showMacrameModal" />
         <CardTemplate link="aTsC_GP6_sI?si=Tp3g9WwNuyyKAl3v" photo="jade_leafy_bracelet.jpg" header="big leafy thing">
             <template v-slot:notes-1>
                 hello
@@ -260,5 +267,126 @@ const showTemplate = (event: any, currentId: number) => {
 </template>
 
 <style scoped lang="scss">
+h2,
+label {
+  color: $bg-dark;
+}
 
+label {
+  font-weight: bold;
+}
+
+span {
+  color: $bg-alt;
+}
+
+.custom_today_title {
+  color: $bg-dark;
+}
+
+.custom_today {
+  border-color: $bg-dark;
+
+  span {
+    color: $bg-dark;
+  }
+}
+
+.custom_card {
+  border: 2px solid $bg-dark;
+  color: $bg-alt;
+  min-height: 200px;
+
+  span {
+    overflow-wrap: break-word;
+  }
+}
+
+.custom_head {
+  background: $bg-dark;
+  letter-spacing: 3px;
+}
+
+.custom_button {
+  background: $bg-dark;
+  color: $bg-alt;
+  transition: 0.1s ease;
+
+  &:hover {
+    transition: 0.1s ease;
+    box-shadow: 0 0 6px 0 $bg-dark;
+    transform: scale(1.01);
+  }
+}
+
+.custom_input {
+  background: $bg-dark;
+  color: $bg-bright;
+
+  &:focus {
+    background: $bg-bright;
+    color: $bg-dark;
+    font-weight: bolder;
+  }
+}
+
+:deep(.p-checkbox .p-checkbox-box.p-highlight) {
+  border-color: $bg-dark;
+  background: $bg-dark;
+
+  :hover {
+    border-color: $secondary;
+    background: $secondary;
+  }
+}
+
+:deep(.p-checkbox .p-checkbox-box .p-checkbox-icon) {
+  color: $bg-bright;
+}
+
+:deep(.p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-highlight:hover) {
+  border-color: $secondary;
+  background: $secondary;
+  color: $primary;
+}
+
+:deep(.p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus) {
+  border-color: $bg-dark;
+  background: $bg-dark;
+  color: $secondary;
+  box-shadow: none;
+}
+
+:deep(.p-checkbox:not(.p-checkbox-disabled) .p-highlight:hover) {
+  border-color: $bg-dark;
+  background: $bg-dark;
+  color: $secondary;
+}
+
+:deep(.p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover) {
+  border-color: $bg-dark;
+}
+
+#save {
+  background: $primary;
+
+  &:hover {
+    background: $secondary;
+  }
+}
+
+#cancel {
+  background: $secondary;
+
+  &:hover {
+    background: $primary;
+  }
+}
+
+.upload {
+  display: flex;
+  justify-content: center;
+  color: $bg-dark;
+  margin-top: 1rem;
+}
 </style>
