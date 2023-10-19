@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import CardTemplate from './../cards/CardTemplate.vue';
-import UploadSupa from "@/components/buttons/UploadSupa.vue";
 import {useConfirm} from "primevue/useconfirm";
 import {useToast} from "primevue/usetoast";
 import {onMounted, ref} from "vue";
-import {supabase} from "../../../supabase";
+// @ts-ignore
+import {supabase} from "@/../supabase.js";
 import ConfirmPopup from "primevue/confirmpopup";
 import Toast from "primevue/toast";
 import ModalTemplate from "@/components/modals/ModalTemplate.vue";
-import Checkbox from "primevue/checkbox";
 import ModalBackdrop from "@/components/modals/ModalBackdrop.vue";
+import Checkbox from "primevue/checkbox";
 
 const confirm = useConfirm();
 const toast = useToast();
@@ -18,16 +18,15 @@ const showMacrameModal = ref(false);
 const showEditModal = ref(false);
 const loading = ref(false);
 
+const updatedId = ref();
 const header = ref<string | null>(null)
 const updateHeader = ref<string | null>(null)
 const link = ref<string | null>(null)
 const updateLink = ref<string | null>(null)
-const photo = ref<string | null>(null)
-const updatePhoto = ref<string | null>(null)
-const notes1 = ref<string | null>(null)
-const updateNotes1 = ref<string | null>(null)
-const notes2 = ref<string | null>(null)
-const updateNotes2 = ref<string | null>(null)
+const notes1 = ref<string | undefined>(undefined)
+const updateNotes1 = ref<string | undefined>(undefined)
+const notes2 = ref<string | undefined>(undefined)
+const updateNotes2 = ref<string | undefined>(undefined)
 
 const macrameData = ref<any>(null)
 
@@ -35,15 +34,14 @@ function openEditModal(
     id: number,
     header: string,
     link: string,
-    photo: string,
     notes1: string,
     notes2: string
 ) {
   showEditModal.value = true;
 
+  updatedId.value = id;
   updateHeader.value = header;
   updateLink.value = link;
-  updatePhoto.value = photo;
   updateNotes1.value = notes1;
   updateNotes2.value = notes2;
 }
@@ -53,9 +51,8 @@ function closeModal() {
   showEditModal.value = false;
   header.value = null;
   link.value = null;
-  photo.value = null;
-  notes1.value = null;
-  notes2.value = null;
+  notes1.value = undefined;
+  notes2.value = undefined;
 }
 
 onMounted(() => {
@@ -68,7 +65,7 @@ async function getRecipes() {
 
     let { data, error, status } = await supabase
         .from("macrame")
-        .select(`id, link, photo, header, notes1, notes2, created_at, updated_at`);
+        .select(`id, link, header, notes1, notes2, created_at, updated_at`);
 
     if (error && status !== 406) throw error;
 
@@ -88,7 +85,6 @@ async function updateRecipes(id?: number) {
     const newEntry = {
       header: header.value,
       link: link.value,
-      photo: photo.value,
       notes1: notes1.value,
       notes2: notes2.value,
       updated_at: new Date()
@@ -97,7 +93,6 @@ async function updateRecipes(id?: number) {
     const updatedEntry = {
       header: updateHeader.value,
       link: updateLink.value,
-      photo: updatePhoto.value,
       notes1: updateNotes1.value,
       notes2: updateNotes2.value,
       updated_at: new Date()
@@ -197,8 +192,11 @@ const showTemplate = (event: any, currentId: number) => {
       >
         <p class="text-lg"><span>add</span></p>
       </button>
+      <div>
+        {{ macrameData }}
+      </div>
       <ModalTemplate :show="showMacrameModal">
-        <h2 class="font-bold text-2xl text-center">new birthday</h2>
+        <h2 class="font-bold text-2xl text-center">new recipe</h2>
         <form class="flex flex-col justify-center">
           <label for="header">header</label>
           <input
@@ -254,12 +252,7 @@ const showTemplate = (event: any, currentId: number) => {
       <ModalBackdrop :showBackdrop="showMacrameModal" />
       <div  class="recipes">
         <div v-for="recipe in macrameData">
-          <CardTemplate :link="recipe.link" :photo="recipe.photo" :header="recipe.header">
-            <!--            <template v-slot:upload>
-                          <div class="upload">
-                            <UploadSupa v-model:path="photo" @upload="updateRecipes"/>
-                          </div>
-                        </template>-->
+          <CardTemplate :link="recipe.link" :header="recipe.header">
             <template v-slot:notes-1>
               {{  recipe.notes1 }}
             </template>
@@ -270,11 +263,11 @@ const showTemplate = (event: any, currentId: number) => {
               <button
                   @click="
                       openEditModal(
-                        birthday.id,
-                        birthday.name,
-                        birthday.date.split('-').reverse().join('-'),
-                        birthday.note,
-                        birthday.isNameday
+                        recipe.id,
+                        recipe.header,
+                        recipe.link,
+                        recipe.notes1,
+                        recipe.notes2
                       )
                     "
                   class="mx-0.5 flex justify-center align-middle"
@@ -284,7 +277,7 @@ const showTemplate = (event: any, currentId: number) => {
                     ></span>
               </button>
               <button
-                  @click="showTemplate($event, birthday.id)"
+                  @click="showTemplate($event, recipe.id)"
                   class="mx-0.5 flex justify-center align-middle"
               >
                     <span
@@ -295,6 +288,61 @@ const showTemplate = (event: any, currentId: number) => {
           </CardTemplate>
         </div>
       </div>
+      <ModalTemplate :show="showEditModal">
+        <h2 class="font-bold text-2xl text-center">edit recipe {{ updatedId }}</h2>
+        <form class="flex flex-col justify-center">
+          <label for="updateHeader">header</label>
+          <input
+              id="updateHeader"
+              type="text"
+              v-model="updateHeader"
+              class="custom_input text-amber-400 rounded-lg p-2 mb-2"
+              required
+          />
+          <label for="updateLink">link</label>
+          <input
+              id="updateLink"
+              type="text"
+              v-model="updateLink"
+              class="custom_input text-amber-400 rounded-lg p-2 mb-2"
+              required
+          />
+          <label for="updateNotes1">materials</label>
+          <textarea
+              id="updateNotes1"
+              type="textarea"
+              v-model="updateNotes1"
+              class="custom_input text-amber-400 rounded-lg p-2 mb-2"
+              required
+          />
+          <label for="updateNotes2">good to know</label>
+          <textarea
+              id="updateNotes2"
+              type="textarea"
+              v-model="updateNotes2"
+              class="custom_input text-amber-400 rounded-lg p-2 mb-2"
+              required
+          />
+          <div class="flex justify-center mt-8">
+            <button
+                type="submit"
+                @click.prevent="updateRecipes(updatedId)"
+                id="save"
+                class="mx-6 px-2 py-1 rounded-lg hover:rounded-xl transition-all"
+            >
+              Save
+            </button>
+            <button
+                @click.prevent="closeModal"
+                id="cancel"
+                class="mx-6 px-2 py-1 rounded-lg hover:rounded-xl transition-all"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </ModalTemplate>
+      <ModalBackdrop :showBackdrop="showEditModal" />
     </div>
 </template>
 

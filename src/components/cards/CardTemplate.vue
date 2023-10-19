@@ -4,10 +4,6 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  photo: {
-    type: String,
-    required: true,
-  },
   header: {
     type: String,
     required: true,
@@ -29,17 +25,10 @@ const YTlink = "https://www.youtube.com/embed/" + props.link;
           height="120rem"
           :src="YTlink"
           title="YouTube video player"
-          frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowfullscreen
         ></iframe>
       </div>
-<!--      <div class="photo">
-        <img :src="photo" />
-        <div>
-          <slot name="upload" />
-        </div>
-      </div>-->
     </div>
     <div class="notes-1">
       <h3>Materials</h3>
