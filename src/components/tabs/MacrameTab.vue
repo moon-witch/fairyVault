@@ -266,6 +266,32 @@ const showTemplate = (event: any, currentId: number) => {
             <template v-slot:notes-2>
               {{  recipe.notes2 }}
             </template>
+            <template v-slot:action>
+              <button
+                  @click="
+                      openEditModal(
+                        birthday.id,
+                        birthday.name,
+                        birthday.date.split('-').reverse().join('-'),
+                        birthday.note,
+                        birthday.isNameday
+                      )
+                    "
+                  class="mx-0.5 flex justify-center align-middle"
+              >
+                    <span
+                        class="pi pi-pencil custom_button rounded p-1 pr-0.7"
+                    ></span>
+              </button>
+              <button
+                  @click="showTemplate($event, birthday.id)"
+                  class="mx-0.5 flex justify-center align-middle"
+              >
+                    <span
+                        class="pi pi-times custom_button rounded p-1 pr-0.7"
+                    ></span>
+              </button>
+            </template>
           </CardTemplate>
         </div>
       </div>

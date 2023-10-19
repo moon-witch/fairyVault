@@ -49,6 +49,9 @@ const YTlink = "https://www.youtube.com/embed/" + props.link;
       <h3>Good to know</h3>
       <slot name="notes-2" />
     </div>
+    <div class="action">
+      <slot name="action"/>
+    </div>
   </div>
 </template>
 
@@ -118,6 +121,14 @@ const YTlink = "https://www.youtube.com/embed/" + props.link;
     justify-content: center;
     align-items: center;
     padding: 0.5rem 0;
+  }
+
+  .action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
   }
 }
 </style>
