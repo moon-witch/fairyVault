@@ -9,7 +9,8 @@ import ConfirmPopup from "primevue/confirmpopup";
 import Toast from "primevue/toast";
 import ModalTemplate from "@/components/modals/ModalTemplate.vue";
 import ModalBackdrop from "@/components/modals/ModalBackdrop.vue";
-import Checkbox from "primevue/checkbox";
+import Dropdown from 'primevue/dropdown';
+import Tags from "@/components/tags/Tags.vue";
 
 const confirm = useConfirm();
 const toast = useToast();
@@ -27,15 +28,19 @@ const notes1 = ref<string | undefined>(undefined)
 const updateNotes1 = ref<string | undefined>(undefined)
 const notes2 = ref<string | undefined>(undefined)
 const updateNotes2 = ref<string | undefined>(undefined)
+const tag = ref<string | undefined>(undefined)
+const updateTag = ref<string | undefined>(undefined)
 
 const macrameData = ref<any>(null)
+const tags = ref<string[]>([])
 
 function openEditModal(
     id: number,
     header: string,
     link: string,
     notes1: string,
-    notes2: string
+    notes2: string,
+    tag: string
 ) {
   showEditModal.value = true;
 
@@ -44,6 +49,7 @@ function openEditModal(
   updateLink.value = link;
   updateNotes1.value = notes1;
   updateNotes2.value = notes2;
+  updateTag.value = tag;
 }
 
 function closeModal() {
@@ -53,10 +59,12 @@ function closeModal() {
   link.value = null;
   notes1.value = undefined;
   notes2.value = undefined;
+  tag.value = undefined;
 }
 
 onMounted(() => {
   getRecipes();
+  getTags();
 });
 
 async function getRecipes() {
@@ -65,12 +73,14 @@ async function getRecipes() {
 
     let { data, error, status } = await supabase
         .from("macrame")
-        .select(`id, link, header, notes1, notes2, created_at, updated_at`);
+        .select(`id, link, header, notes1, notes2, tag, created_at, updated_at`);
 
     if (error && status !== 406) throw error;
 
     if (data) {
-      macrameData.value = data;
+      macrameData.value = data.sort((a: any, b: any) => {
+        return a.id - b.id;
+      });
       console.log(data)
     }
   } finally {
@@ -87,6 +97,7 @@ async function updateRecipes(id?: number) {
       link: link.value,
       notes1: notes1.value,
       notes2: notes2.value,
+      tag: tag.value,
       updated_at: new Date()
     };
 
@@ -95,6 +106,7 @@ async function updateRecipes(id?: number) {
       link: updateLink.value,
       notes1: updateNotes1.value,
       notes2: updateNotes2.value,
+      tag: tag.value,
       updated_at: new Date()
     };
 
@@ -130,6 +142,31 @@ async function deleteRecipes(id: number) {
     loading.value = false;
     await getRecipes();
     closeModal();
+  }
+}
+
+async function getTags() {
+  try {
+    loading.value = true;
+
+    let { data, error, status } = await supabase
+        .from("tags")
+        .select(`tag, created_at, updated_at`);
+
+    if (error && status !== 406) throw error;
+
+    if (data) {
+      tags.value= [];
+      for(const tag of data) {
+        if (!tags.value.includes(tag.tag)) {
+          tags.value.push(tag.tag)
+          console.log(tags.value)
+        }
+      }
+      console.log(tags.value)
+    }
+  } finally {
+    loading.value = false;
   }
 }
 
@@ -185,15 +222,15 @@ const showTemplate = (event: any, currentId: number) => {
           </div>
         </template>
       </ConfirmPopup>
-      <button
-          type="button"
-          @click="showMacrameModal = !showMacrameModal"
-          class="custom_button lg:mr-8 px-4 py-2 rounded"
-      >
-        <p class="text-lg"><span>add</span></p>
-      </button>
-      <div>
-        {{ macrameData }}
+      <div class="action-bar">
+        <button
+            type="button"
+            @click="showMacrameModal = !showMacrameModal"
+            class="custom_button lg:mr-8 px-4 py-2 rounded"
+        >
+          <p class="text-lg"><span>add</span></p>
+        </button>
+        <Tags :tags="tags && tags.length > 0 ? tags : ['no tags defined']" @tags-updated="getTags"/>
       </div>
       <ModalTemplate :show="showMacrameModal">
         <h2 class="font-bold text-2xl text-center">new recipe</h2>
@@ -206,6 +243,8 @@ const showTemplate = (event: any, currentId: number) => {
               class="custom_input text-amber-400 rounded-lg p-2 mb-2"
               required
           />
+          <label for="addTag">tag</label>
+          <Dropdown v-model="tag" :options="tags" id="addTag" class="add-tag"/>
           <label for="link">link</label>
           <input
               id="link"
@@ -258,6 +297,7 @@ const showTemplate = (event: any, currentId: number) => {
             </template>
             <template v-slot:notes-2>
               {{  recipe.notes2 }}
+              {{ recipe.tag }}
             </template>
             <template v-slot:action>
               <button
@@ -267,7 +307,8 @@ const showTemplate = (event: any, currentId: number) => {
                         recipe.header,
                         recipe.link,
                         recipe.notes1,
-                        recipe.notes2
+                        recipe.notes2,
+                        recipe.tag
                       )
                     "
                   class="mx-0.5 flex justify-center align-middle"
@@ -276,6 +317,7 @@ const showTemplate = (event: any, currentId: number) => {
                         class="pi pi-pencil custom_button rounded p-1 pr-0.7"
                     ></span>
               </button>
+              {{ recipe.tag }}
               <button
                   @click="showTemplate($event, recipe.id)"
                   class="mx-0.5 flex justify-center align-middle"
@@ -299,6 +341,8 @@ const showTemplate = (event: any, currentId: number) => {
               class="custom_input text-amber-400 rounded-lg p-2 mb-2"
               required
           />
+          <label for="addTag">tag</label>
+          <Dropdown v-model="updateTag" :options="tags" id="addTag" :placeholder="tag" class="add-tag"/>
           <label for="updateLink">link</label>
           <input
               id="updateLink"
@@ -364,11 +408,13 @@ span {
   color: $bg-dark;
 }
 
-.custom_today {
-  border-color: $bg-dark;
+.action-bar {
+  display: flex;
+  justify-content: start;
+  align-items: center;
 
-  span {
-    color: $bg-dark;
+  @media (max-width: 1023px) {
+    flex-direction: column;
   }
 }
 
@@ -379,6 +425,7 @@ span {
 
   span {
     overflow-wrap: break-word;
+    flex-wrap: wrap;
   }
 }
 
@@ -408,6 +455,11 @@ span {
     color: $bg-dark;
     font-weight: bolder;
   }
+}
+
+.add-tag {
+  margin-bottom: 0.5rem;
+  background-color: $bg-dark;
 }
 
 :deep(.p-checkbox .p-checkbox-box.p-highlight) {
@@ -474,5 +526,9 @@ span {
   display: flex;
   justify-content: center;
   gap: 5rem;
+
+  @media(max-width: 1023px) {
+    flex-direction: column;
+  }
 }
 </style>
