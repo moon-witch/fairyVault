@@ -81,7 +81,6 @@ async function getRecipes() {
       macrameData.value = data.sort((a: any, b: any) => {
         return a.id - b.id;
       });
-      console.log(data)
     }
   } finally {
     loading.value = false;
@@ -160,10 +159,8 @@ async function getTags() {
       for(const tag of data) {
         if (!tags.value.includes(tag.tag)) {
           tags.value.push(tag.tag)
-          console.log(tags.value)
         }
       }
-      console.log(tags.value)
     }
   } finally {
     loading.value = false;
@@ -223,6 +220,7 @@ const showTemplate = (event: any, currentId: number) => {
         </template>
       </ConfirmPopup>
       <div class="action-bar">
+        <Tags :tags="tags && tags.length > 0 ? tags : ['no tags defined']" @tags-updated="getTags"/>
         <button
             type="button"
             @click="showMacrameModal = !showMacrameModal"
@@ -230,7 +228,6 @@ const showTemplate = (event: any, currentId: number) => {
         >
           <p class="text-lg"><span>add</span></p>
         </button>
-        <Tags :tags="tags && tags.length > 0 ? tags : ['no tags defined']" @tags-updated="getTags"/>
       </div>
       <ModalTemplate :show="showMacrameModal">
         <h2 class="font-bold text-2xl text-center">new recipe</h2>
@@ -289,20 +286,21 @@ const showTemplate = (event: any, currentId: number) => {
         </form>
       </ModalTemplate>
       <ModalBackdrop :showBackdrop="showMacrameModal" />
-      <div v-for="tag in tags">
-        <div class="tag-header"> {{ tag }}</div>
-        <div  class="recipes">
-          <div v-for="recipe in macrameData">
-            <CardTemplate v-if="recipe.tag === tag" :link="recipe.link" :header="recipe.header">
-              <template v-slot:notes-1>
-                {{  recipe.notes1 }}
-              </template>
-              <template v-slot:notes-2>
-                {{  recipe.notes2 }}
-              </template>
-              <template v-slot:action>
-                <button
-                    @click="
+      <div class="macrame-wrapper">
+        <div v-for="tag in tags">
+          <div class="tag-header"> {{ tag }}</div>
+          <div  class="recipes">
+            <div v-for="recipe in macrameData">
+              <CardTemplate v-if="recipe.tag === tag" :link="recipe.link" :header="recipe.header">
+                <template v-slot:notes-1>
+                  {{  recipe.notes1 }}
+                </template>
+                <template v-slot:notes-2>
+                  {{  recipe.notes2 }}
+                </template>
+                <template v-slot:action>
+                  <button
+                      @click="
                       openEditModal(
                         recipe.id,
                         recipe.header,
@@ -312,22 +310,23 @@ const showTemplate = (event: any, currentId: number) => {
                         recipe.tag
                       )
                     "
-                    class="mx-0.5 flex justify-center align-middle"
-                >
+                      class="mx-0.5 flex justify-center align-middle"
+                  >
                     <span
                         class="pi pi-pencil custom_button rounded p-1 pr-0.7"
                     ></span>
-                </button>
-                <button
-                    @click="showTemplate($event, recipe.id)"
-                    class="mx-0.5 flex justify-center align-middle"
-                >
+                  </button>
+                  <button
+                      @click="showTemplate($event, recipe.id)"
+                      class="mx-0.5 flex justify-center align-middle"
+                  >
                     <span
                         class="pi pi-times custom_button rounded p-1 pr-0.7"
                     ></span>
-                </button>
-              </template>
-            </CardTemplate>
+                  </button>
+                </template>
+              </CardTemplate>
+            </div>
           </div>
         </div>
       </div>
@@ -409,6 +408,12 @@ span {
   color: $bg-dark;
 }
 
+.macrame-wrapper {
+  border: 1px solid $bg-dark;
+  border-radius: 50px;
+  margin: 2rem 0;
+}
+
 .tag-header {
   margin: 1rem;
   padding: 1rem;
@@ -426,7 +431,7 @@ span {
   align-items: center;
 
   @media (max-width: 1023px) {
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
 }
 

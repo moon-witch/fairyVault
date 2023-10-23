@@ -121,7 +121,7 @@ const showTemplate = (event: any, currentTag: string) => {
         <input type="text" v-model="newTag" class="tag-input" :class="{inputExpand: inputExpanded}"
                v-on-click-outside="pauseInput">
         <i v-if="!inputExpanded" class="pi pi-plus symbol" @click="inputExpanded = true"/>
-        <i v-if="inputExpanded" class="pi pi-tag symbol" @click="closeInput"/>
+        <i v-if="inputExpanded" class="pi pi-tag symbol" :class="{inputExpand: inputExpanded}" @click="closeInput"/>
       </div>
     </div>
     <div class="tags">
@@ -155,7 +155,8 @@ const showTemplate = (event: any, currentTag: string) => {
     background: $bg-dark;
     color: $bg-bright;
     padding: 0.3rem;
-    border-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
     font-weight: bold;
   }
 
@@ -187,6 +188,13 @@ const showTemplate = (event: any, currentTag: string) => {
       background: $bg-dark;
       border-top-right-radius: 5px;
       border-bottom-right-radius: 5px;
+      font-size: 1.6rem;
+
+      &.inputExpand {
+        width: auto;
+        padding: 0.25rem 0.25rem 0.25rem 0.3rem;
+        font-size: 1rem;
+      }
 
       &:hover {
         cursor: pointer;
