@@ -32,7 +32,7 @@ const handleSignOut = async () => {
         fairy's secret mangrove forest
       </div>
     </div>
-    <div class="p-8">
+    <div class="lg:p-8 pt-8">
       <TabView>
         <TabPanel header="birthdays" >
           <BirthdayTab />

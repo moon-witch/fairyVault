@@ -412,6 +412,10 @@ span {
   border: 1px solid $bg-dark;
   border-radius: 50px;
   margin: 2rem 0;
+
+  @media (max-width: 1023px) {
+    border: none;
+  }
 }
 
 .tag-header {
