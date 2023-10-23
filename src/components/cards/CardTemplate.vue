@@ -53,7 +53,7 @@ const YTlink = "https://www.youtube.com/embed/" + props.link;
   border: 1px solid $bg-dark;
   border-radius: 50px;
   padding: 2rem;
-  margin-top: 2rem;
+  margin: 0 1rem 2rem 1rem;
 
   .image-content {
     display: flex;

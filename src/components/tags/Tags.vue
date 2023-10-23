@@ -136,7 +136,7 @@ const showTemplate = (event: any, currentTag: string) => {
 <style scoped lang="scss">
 .tag-container {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
   width: 100%;
 
@@ -147,7 +147,7 @@ const showTemplate = (event: any, currentTag: string) => {
 
 .header-input {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 
 
@@ -197,15 +197,12 @@ const showTemplate = (event: any, currentTag: string) => {
 
 .tags {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: 1rem;
   margin-left: 1rem;
-
-  @media (max-width: 1023px) {
-    overflow: scroll;
-    justify-content: start;
-  }
+  width: 89%;
+  flex-wrap: wrap;
 
   .tag {
     background: $bg-bright;
@@ -215,6 +212,8 @@ const showTemplate = (event: any, currentTag: string) => {
     display: flex;
     align-items: center;
     gap: 0.2rem;
+    height: 2rem;
+    white-space: nowrap;
 
     @media (max-width: 1023px) {
       margin-top: 1rem;

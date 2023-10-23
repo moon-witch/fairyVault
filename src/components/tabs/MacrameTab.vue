@@ -106,7 +106,7 @@ async function updateRecipes(id?: number) {
       link: updateLink.value,
       notes1: updateNotes1.value,
       notes2: updateNotes2.value,
-      tag: tag.value,
+      tag: updateTag.value,
       updated_at: new Date()
     };
 
@@ -289,19 +289,20 @@ const showTemplate = (event: any, currentId: number) => {
         </form>
       </ModalTemplate>
       <ModalBackdrop :showBackdrop="showMacrameModal" />
-      <div  class="recipes">
-        <div v-for="recipe in macrameData">
-          <CardTemplate :link="recipe.link" :header="recipe.header">
-            <template v-slot:notes-1>
-              {{  recipe.notes1 }}
-            </template>
-            <template v-slot:notes-2>
-              {{  recipe.notes2 }}
-              {{ recipe.tag }}
-            </template>
-            <template v-slot:action>
-              <button
-                  @click="
+      <div v-for="tag in tags">
+        <div class="tag-header"> {{ tag }}</div>
+        <div  class="recipes">
+          <div v-for="recipe in macrameData">
+            <CardTemplate v-if="recipe.tag === tag" :link="recipe.link" :header="recipe.header">
+              <template v-slot:notes-1>
+                {{  recipe.notes1 }}
+              </template>
+              <template v-slot:notes-2>
+                {{  recipe.notes2 }}
+              </template>
+              <template v-slot:action>
+                <button
+                    @click="
                       openEditModal(
                         recipe.id,
                         recipe.header,
@@ -311,23 +312,23 @@ const showTemplate = (event: any, currentId: number) => {
                         recipe.tag
                       )
                     "
-                  class="mx-0.5 flex justify-center align-middle"
-              >
+                    class="mx-0.5 flex justify-center align-middle"
+                >
                     <span
                         class="pi pi-pencil custom_button rounded p-1 pr-0.7"
                     ></span>
-              </button>
-              {{ recipe.tag }}
-              <button
-                  @click="showTemplate($event, recipe.id)"
-                  class="mx-0.5 flex justify-center align-middle"
-              >
+                </button>
+                <button
+                    @click="showTemplate($event, recipe.id)"
+                    class="mx-0.5 flex justify-center align-middle"
+                >
                     <span
                         class="pi pi-times custom_button rounded p-1 pr-0.7"
                     ></span>
-              </button>
-            </template>
-          </CardTemplate>
+                </button>
+              </template>
+            </CardTemplate>
+          </div>
         </div>
       </div>
       <ModalTemplate :show="showEditModal">
@@ -408,9 +409,20 @@ span {
   color: $bg-dark;
 }
 
+.tag-header {
+  margin: 1rem;
+  padding: 1rem;
+  font-weight: bold;
+  text-transform: capitalize;
+  background: $bg-dark;
+  color: $bg-bright;
+  width: fit-content;
+  border-radius: 50px;
+}
+
 .action-bar {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 
   @media (max-width: 1023px) {
@@ -524,8 +536,7 @@ span {
 
 .recipes {
   display: flex;
-  justify-content: center;
-  gap: 5rem;
+  justify-content: flex-start;
 
   @media(max-width: 1023px) {
     flex-direction: column;
