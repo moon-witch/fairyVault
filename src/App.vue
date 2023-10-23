@@ -34,6 +34,5 @@ onMounted(() => {
 <style lang="scss" scoped>
 #appContainer {
   min-height: 100vh;
-  background: $bg-dark;
 }
 </style>
