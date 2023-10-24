@@ -7,6 +7,7 @@ import TabPanel from "primevue/tabpanel";
 // @ts-ignore
 import BirthdayTab from "@/components/tabs/BirthdayTab.vue";
 import MacrameTab from "@/components/tabs/MacrameTab.vue";
+import TimestampTab from "@/components/tabs/TimestampTab.vue";
 
 const loading = ref(false);
 const handleSignOut = async () => {
@@ -39,6 +40,9 @@ const handleSignOut = async () => {
         </TabPanel>
         <TabPanel header="macrame">
           <MacrameTab />
+        </TabPanel>
+        <TabPanel header="timestamp">
+          <TimestampTab />
         </TabPanel>
       </TabView>
     </div>
