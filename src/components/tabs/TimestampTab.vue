@@ -1,20 +1,16 @@
 <script setup lang="ts">
 import {computed, ref, watch} from "vue";
 
-const inputDate = ref('')
-const inputTime = ref('')
-const inputTimeZone = ref(0)
-const plusActive = ref(true)
-const minusActive = ref(false)
+const inputDate = ref<string>('')
+const inputTime = ref<string>('')
+const inputTimeZone = ref<string>('0')
+const plusActive = ref<boolean>(true)
+const minusActive = ref<boolean>(false)
 
 const dateTime = computed(() => {
   if (inputTimeZone.value != 0) {
     const pre = plusActive.value ? '+' : minusActive.value ? '-' : ''
     const hours = inputTimeZone.value.length === 1 ? `0${inputTimeZone.value}` : inputTimeZone.value
-    console.log(pre)
-    console.log(hours)
-    console.log(inputTimeZone.value.length)
-    console.log(`${inputDate.value}T${inputTime.value}:00.000${pre}${hours}:00`)
     return new Date(`${inputDate.value}T${inputTime.value}:00.000${pre}${hours}:00`).getTime() / 1000
   }
   return new Date(`${inputDate.value}T${inputTime.value}:00.000Z`).getTime() / 1000
