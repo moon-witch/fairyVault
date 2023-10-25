@@ -331,7 +331,7 @@ const showTemplate = (event: any, currentId: number) => {
       </ModalTemplate>
       <ModalBackdrop :showBackdrop="showBirthdayModal" />
     </div>
-    <div>
+    <div class="birthday-container">
       <div v-if="birthdayToday" class="flex justify-center">
         <div
           class="custom_today_container flex justify-center my-4 rounded-xl p-2.5"
@@ -509,6 +509,17 @@ span {
 
   span {
     color: $bg-dark;
+  }
+}
+
+.birthday-container {
+  border: 1px solid $bg-dark;
+  border-radius: 50px;
+  margin-top: 1rem;
+
+  @media (max-width: 1023px) {
+    border: none;
+    margin-top: 0;
   }
 }
 
