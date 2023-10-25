@@ -382,7 +382,7 @@ const showTemplate = (event: any, currentId: number) => {
                       currentDate ===
                       birthday.date.split('-').join('.').substring(0, 6)
                     "
-                    class="bg-red-900 rounded"
+                    class="bg-red-900 rounded p-1"
                     >{{ birthday.date.split("-").join(".") }}
                     <span class="text-xs" v-if="birthday.isNameday">(N)</span>
                   </span>
