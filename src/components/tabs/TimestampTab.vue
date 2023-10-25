@@ -8,7 +8,7 @@ const plusActive = ref<boolean>(true)
 const minusActive = ref<boolean>(false)
 
 const dateTime = computed(() => {
-  if (inputTimeZone.value != 0) {
+  if (inputTimeZone.value != '0') {
     const pre = plusActive.value ? '+' : minusActive.value ? '-' : ''
     const hours = inputTimeZone.value.length === 1 ? `0${inputTimeZone.value}` : inputTimeZone.value
     return new Date(`${inputDate.value}T${inputTime.value}:00.000${pre}${hours}:00`).getTime() / 1000
