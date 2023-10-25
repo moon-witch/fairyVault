@@ -117,12 +117,20 @@ function clickPlus() {
           width: 2rem;
           border-radius: 5px;
           font-weight: bold;
+
+          &:hover {
+            cursor: pointer;
+          }
         }
 
         .minus {
           width: 2rem;
           border-radius: 5px;
           font-weight: bold;
+
+          &:hover {
+            cursor: pointer;
+          }
         }
       }
 
