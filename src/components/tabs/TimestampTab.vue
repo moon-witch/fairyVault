@@ -28,6 +28,9 @@ function clickPlus() {
 </script>
 
 <template>
+  <h2 class="font-bold text-4xl text-center my-8">
+    timestamp
+  </h2>
 <div class="timestamp-container">
   <div class="inputs">
     <div class="input">
@@ -78,6 +81,9 @@ function clickPlus() {
 </template>
 
 <style scoped lang="scss">
+h2 {
+  color: $bg-dark;
+}
 .timestamp-container {
   display: flex;
   justify-content: center;

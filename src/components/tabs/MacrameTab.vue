@@ -219,6 +219,9 @@ const showTemplate = (event: any, currentId: number) => {
           </div>
         </template>
       </ConfirmPopup>
+      <h2 class="font-bold text-4xl text-center my-8">
+        macrame
+      </h2>
       <div class="action-bar">
         <Tags class="tags" :tags="tags && tags.length > 0 ? tags : ['no tags defined']" @tags-updated="getTags"/>
         <button

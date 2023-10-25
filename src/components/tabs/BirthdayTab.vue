@@ -262,6 +262,9 @@ const showTemplate = (event: any, currentId: number) => {
         </div>
       </template>
     </ConfirmPopup>
+    <h2 class="font-bold text-4xl text-center my-8">
+      birthdays
+    </h2>
     <div class="text-center lg:text-end">
       <button
         type="button"
@@ -329,9 +332,6 @@ const showTemplate = (event: any, currentId: number) => {
       <ModalBackdrop :showBackdrop="showBirthdayModal" />
     </div>
     <div>
-      <h2 class="font-bold text-4xl text-center my-8">
-        birthdays
-      </h2>
       <div v-if="birthdayToday" class="flex justify-center">
         <div
           class="custom_today_container flex justify-center my-4 rounded-xl p-2.5"
