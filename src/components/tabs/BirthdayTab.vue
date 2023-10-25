@@ -329,7 +329,7 @@ const showTemplate = (event: any, currentId: number) => {
       <ModalBackdrop :showBackdrop="showBirthdayModal" />
     </div>
     <div>
-      <h2 class="font-bold text-6xl text-center my-8 frontpage-font">
+      <h2 class="font-bold text-4xl text-center my-8">
         birthdays
       </h2>
       <div v-if="birthdayToday" class="flex justify-center">
@@ -362,7 +362,7 @@ const showTemplate = (event: any, currentId: number) => {
       <div class="custom_container rounded-xl grid lg:grid-cols-3">
         <div v-for="month in months" class="m-1 lg:m-8 custom_card rounded">
           <div
-            class="text-center mb-2 py-2 font-bold text-3xl custom_head frontpage-font"
+            class="text-center mb-2 py-2 font-bold text-2xl custom_head"
           >
             {{ month.name }}
           </div>

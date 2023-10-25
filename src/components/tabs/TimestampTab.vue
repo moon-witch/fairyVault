@@ -37,7 +37,7 @@ function clickPlus() {
           type="date"
           v-model="inputDate"
           style="width: 9.5rem;"
-          class="custom_input text-amber-400 rounded-lg p-2 mb-2"
+          class="custom_input text-cyan-200 rounded-lg p-2 mb-2"
           required
       />
     </div>
@@ -48,7 +48,7 @@ function clickPlus() {
           type="time"
           v-model="inputTime"
           style="width: 8rem;"
-          class="custom_input text-amber-400 rounded-lg p-2 mb-2"
+          class="custom_input text-cyan-200 rounded-lg p-2 mb-2"
           required
       />
     </div>
@@ -65,7 +65,7 @@ function clickPlus() {
             type="text"
             v-model="inputTimeZone"
             style="width: 3rem; text-align: center;"
-            class="custom_input text-amber-400 rounded-lg p-2 mb-2"
+            class="custom_input text-cyan-200 rounded-lg p-2 mb-2"
             required
         />
       </div>
@@ -84,6 +84,9 @@ function clickPlus() {
   flex-direction: column;
   align-items: center;
   gap: 2rem;
+  border: 1px solid $bg-dark;
+  border-radius: 50px;
+  padding: 2rem;
 }
 
 .inputs {

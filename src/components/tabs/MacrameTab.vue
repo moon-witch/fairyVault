@@ -220,7 +220,7 @@ const showTemplate = (event: any, currentId: number) => {
         </template>
       </ConfirmPopup>
       <div class="action-bar">
-        <Tags :tags="tags && tags.length > 0 ? tags : ['no tags defined']" @tags-updated="getTags"/>
+        <Tags class="tags" :tags="tags && tags.length > 0 ? tags : ['no tags defined']" @tags-updated="getTags"/>
         <button
             type="button"
             @click="showMacrameModal = !showMacrameModal"
@@ -427,6 +427,11 @@ span {
   color: $bg-bright;
   width: fit-content;
   border-radius: 50px;
+
+  @media (max-width: 1023px) {
+    margin: 1rem auto;
+
+  }
 }
 
 .action-bar {

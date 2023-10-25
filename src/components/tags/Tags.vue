@@ -150,6 +150,11 @@ const showTemplate = (event: any, currentTag: string) => {
   justify-content: flex-start;
   align-items: center;
 
+  @media (max-width: 1023px) {
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
 
   .header {
     background: $bg-dark;
@@ -207,10 +212,14 @@ const showTemplate = (event: any, currentTag: string) => {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
   margin-left: 1rem;
   width: 89%;
   flex-wrap: wrap;
+
+  @media (max-width: 1023px) {
+    margin-top: 1rem;
+  }
 
   .tag {
     background: $bg-bright;
@@ -222,10 +231,6 @@ const showTemplate = (event: any, currentTag: string) => {
     gap: 0.2rem;
     height: 2rem;
     white-space: nowrap;
-
-    @media (max-width: 1023px) {
-      margin-top: 1rem;
-    }
 
     .sort {
       padding: 0 0.2rem;
