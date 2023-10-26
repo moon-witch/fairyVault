@@ -63,7 +63,7 @@ const handleSignOut = async () => {
 }
 
 .fairy-image {
-  margin-top: 2rem;
+  padding-top: 2rem;
   display: flex;
   justify-content: center;
 
