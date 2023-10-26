@@ -28,12 +28,15 @@ const handleSignOut = async () => {
 
 <template>
   <div>
+    <div class="fairy-image">
+      <img src="/fairy-icon.png" style="width: 5rem;"/>
+    </div>
     <div class="custom_text flex justify-center pt-32 general-header">
       <div class="frontpage-font font-bold text-7xl text-center">
         fairy's secret mangrove forest
       </div>
     </div>
-    <div class="lg:p-8 pt-8 mt-8 lg:mt-0">
+    <div class="lg:p-8 pt-8 mt-3 lg:mt-0">
       <TabView>
         <TabPanel header="birthdays" >
           <BirthdayTab />
@@ -58,6 +61,19 @@ const handleSignOut = async () => {
     display: none;
   }
 }
+
+.fairy-image {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+
+  @media (min-width: 1024px) {
+    position: absolute;
+    left: 1.5rem;
+    top: -1rem;
+  }
+}
+
 .custom_panel_container {
   background: $bg-alt;
 }

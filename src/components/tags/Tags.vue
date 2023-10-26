@@ -198,6 +198,7 @@ const showTemplate = (event: any, currentTag: string) => {
       &.inputExpand {
         width: auto;
         padding: 0.25rem 0.25rem 0.25rem 0.3rem;
+        margin: 0.5rem 0.2rem 0.5rem -0.8rem;
         font-size: 1rem;
       }
 
