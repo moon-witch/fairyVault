@@ -132,7 +132,9 @@ async function getBirthdays() {
       .from("birthdays")
       .select(`id, name, date, note, created_at, updated_at, isNameday`);
 
-    if (error && status !== 406) throw error;
+    if (error && status !== 406) {
+      console.error(error)
+    }
 
     if (data) {
       birthdayData.value = data;
