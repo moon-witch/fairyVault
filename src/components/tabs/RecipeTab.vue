@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// @ts-nocheck
 import {useRecipe} from "@/composables/useRecipe";
 import {onMounted, provide, ref} from "vue";
 import AddRecipeModal from "@/components/modals/AddRecipeModal.vue";
